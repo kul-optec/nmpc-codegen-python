@@ -1,3 +1,6 @@
 [submodule "kernel"]
 	path = kernel
 	url = https://github.com/kul-forbes/nmpc-codegen
+[submodule "proximal_functions"]
+	path = proximal_functions
+	url = https://github.com/kul-forbes/C_proximal_functions
