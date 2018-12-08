@@ -18,7 +18,7 @@ class Source_file_generator:
         self._function_type=function_type
     def open(self):
         """
-        Open fil stream
+        Open file stream
         """
         file = Path(self._location)
         if (file.exists()):
@@ -34,6 +34,9 @@ class Source_file_generator:
         elif (self._function_type == "proxg"):
             print("generating proxg-type function")
             self._source_file.write("void casadi_interface_proxg(real_t* state){\n")
+        elif (self._function_type == "gproxg"):
+            print("generating gproxg-type function")
+            self._source_file.write("real_t casadi_interface_proxg(real_t* state){\n")
         else:
             print("ERROR wrong function_type pick either g or proxg")
             self._source_file.close()
@@ -42,6 +45,13 @@ class Source_file_generator:
         self.write_line("for("+iterator_name+"=0;i<"+str(length)+";i++){",indent)
     def close_for(self,indent):
         self.write_line("}",indent)
+    def write_function_call(self,function_name,args,indent):
+        argument_list =  ",".join(args)
+        self.write_line(function_name+"("+argument_list+");",)
+    def write_instantiate_struct(self,variable_name,struct_name,values,indent):
+        value_string = ",".join(values)
+        line = " ".join(["struct",struct_name, variable_name,"=","{",value_string,"};"])
+        self.write_line(line,indent)
     def write_line(self,line,indent):
         string_indent = " "*indent*Source_file_generator.number_of_spaces_in_tab
         self._source_file.write(string_indent+line+"\n")
